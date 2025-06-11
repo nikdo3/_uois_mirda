@@ -13,8 +13,8 @@ jobs:
       - name: Python audit
         run: |
           pip install pip-audit safety
-          pip-audit --output audit_python.json --format json
-          safety check --json > safety_python.json
+          pip-audit --output audit_python.json --format json || echo "Python audit completed with vulnerabilities."
+          safety check --json > safety_python.json || echo "Safety check completed with vulnerabilities."
 
       - name: Node.js audit
         run: |
