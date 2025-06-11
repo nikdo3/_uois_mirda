@@ -1,0 +1,23 @@
+name: Security Audit
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Python audit
+        run: |
+          pip install pip-audit safety
+          pip-audit --output audit_python.json --format json
+          safety check --json > safety_python.json
+
+      - name: Node.js audit
+        run: |
+          npm install
+          npm audit --json > audit_npm.json
+          npx snyk test --json > snyk_npm.json || true
